@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  playwright-mcp:
+    image: mcr.microsoft.com/playwright/mcp:latest
+    container_name: playwright-mcp-server
+    environment:
+      - NODE_ENV=production
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    ports:
+      - "8931:8931"  # SSE transport port for standalone mode
+    volumes:
+      - playwright_data:/ms-playwright
+      - ./output:/app/output  # Output directory for screenshots, PDFs, etc.
+      - ./storage:/app/storage  # Storage state files
+    command: ["--headless", "--browser", "chromium", "--no-sandbox", "--port", "8931"]
+    restart: unless-stopped
+    networks:
+      - playwright-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8931/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 可选：如果需要本地克隆并开发
+  playwright-mcp-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: playwright-mcp-dev:latest
+    container_name: playwright-mcp-dev
+    profiles:
+      - dev
+    environment:
+      - NODE_ENV=development
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    ports:
+      - "8932:8931"
+    volumes:
+      - .:/app
+      - playwright_data_dev:/ms-playwright
+      - ./output:/app/output
+      - ./storage:/app/storage
+      - /app/node_modules  # 防止本地 node_modules 覆盖容器内的
+    command: ["--headless", "--browser", "chromium", "--no-sandbox", "--port", "8931"]
+    restart: unless-stopped
+    networks:
+      - playwright-network
+
+volumes:
+  playwright_data:
+    driver: local
+  playwright_data_dev:
+    driver: local
+
+networks:
+  playwright-network:
+    driver: bridge 

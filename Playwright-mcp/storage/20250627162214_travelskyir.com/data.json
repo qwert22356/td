@@ -1,0 +1,153 @@
+{
+  "extraction_time": "2025-06-27 16:22:14",
+  "main_url": "https://www.travelskyir.com/s/index.php",
+  "website_title": "中国民航信息网络股份有限公司",
+  "links": [
+    {
+      "title": "主页",
+      "url": "https://www.travelskyir.com/s/index.php"
+    },
+    {
+      "title": "繁體",
+      "url": "https://www.travelskyir.com/c/index.php"
+    },
+    {
+      "title": "English",
+      "url": "https://www.travelskyir.com/html/index.php"
+    },
+    {
+      "title": "关于我们",
+      "url": "https://www.travelskyir.com/s/about_profile.php"
+    },
+    {
+      "title": "投资者关系",
+      "url": "https://www.travelskyir.com/s/ir_highlights.php"
+    },
+    {
+      "title": "新闻中心",
+      "url": "https://www.travelskyir.com/s/news_press.php"
+    },
+    {
+      "title": "联络我们",
+      "url": "https://www.travelskyir.com/s/contact.php"
+    },
+    {
+      "title": "公司及公关联络",
+      "url": "https://www.travelskyir.com/s/contact.php"
+    },
+    {
+      "title": "公司简介",
+      "url": "https://www.travelskyir.com/s/about_profile.php"
+    },
+    {
+      "title": "发展历程",
+      "url": "https://www.travelskyir.com/s/about_development.php"
+    },
+    {
+      "title": "业务概览",
+      "url": "https://www.travelskyir.com/s/about_biz.php"
+    },
+    {
+      "title": "公司架构",
+      "url": "https://www.travelskyir.com/s/about_structure.php"
+    },
+    {
+      "title": "关联网站",
+      "url": "https://www.travelskyir.com/s/about_links.php"
+    },
+    {
+      "title": "财务摘要",
+      "url": "https://www.travelskyir.com/s/ir_highlights.php"
+    },
+    {
+      "title": "财务及ESG报告",
+      "url": "https://www.travelskyir.com/s/ir_report.php"
+    },
+    {
+      "title": "公告",
+      "url": "https://www.travelskyir.com/s/ir_announce.php"
+    },
+    {
+      "title": "通函",
+      "url": "https://www.travelskyir.com/s/ir_circulars.php"
+    },
+    {
+      "title": "运营数据",
+      "url": "https://www.travelskyir.com/s/ir_operation.php"
+    },
+    {
+      "title": "业绩简报",
+      "url": "https://www.travelskyir.com/s/ir_presentation.php"
+    },
+    {
+      "title": "公司资料",
+      "url": "https://www.travelskyir.com/s/ir_info.php"
+    },
+    {
+      "title": "电邮提示",
+      "url": "https://www.travelskyir.com/s/ir_alert.php"
+    },
+    {
+      "title": "投资者关系行程",
+      "url": "https://www.travelskyir.com/s/ir_calendar.php"
+    },
+    {
+      "title": "券商覆盖",
+      "url": "https://www.travelskyir.com/s/ir_analyst.php"
+    },
+    {
+      "title": "新闻稿",
+      "url": "https://www.travelskyir.com/s/news_press.php"
+    },
+    {
+      "title": "媒体登记",
+      "url": "https://www.travelskyir.com/s/news_media.php"
+    },
+    {
+      "title": "网站地图",
+      "url": "https://www.travelskyir.com/s/sitemap.php"
+    },
+    {
+      "title": "免责声明",
+      "url": "#0"
+    },
+    {
+      "title": "EQS TodayIR",
+      "url": "http://www.todayir.com/sc/index.php"
+    },
+    {
+      "title": "以电子方式发布公司通讯的相关安排",
+      "url": "https://www.travelskyir.com/pdf/Corporate_Communications.pdf"
+    },
+    {
+      "title": "公告及通告 - 截至2024年12月31日止年度之末期股息",
+      "url": "https://media-travelsky.todayir.com/20250612181601270811711623_tc.pdf"
+    },
+    {
+      "title": "公告及通告 - 董事名单与其角色和职能",
+      "url": "https://media-travelsky.todayir.com/20250612181601390411711603_tc.pdf"
+    },
+    {
+      "title": "公告及通告 - 公告 (1)于股东会年会通过的决议案的投票结果 (2)派发截至二零二四年十二月三十一日止年度的末期股息",
+      "url": "https://media-travelsky.todayir.com/20250612180802224711711580_tc.pdf"
+    },
+    {
+      "title": "公告及通告 - 公告 委任副总经理",
+      "url": "https://media-travelsky.todayir.com/2025060416400146211700920_tc.pdf"
+    },
+    {
+      "title": "截至2025年5月31日止月份之股份发行人的证券变动月报表",
+      "url": "https://media-travelsky.todayir.com/20250602121601228011694857_tc.pdf"
+    },
+    {
+      "title": "中国航信2025年4月运营资料",
+      "url": "https://media-travelsky.todayir.com/20250528091857278008131_tc.pdf"
+    },
+    {
+      "title": "2024 环境、社会及管治报告",
+      "url": "https://media-travelsky.todayir.com/20250422174802312411633792_tc.pdf"
+    }
+  ],
+  "total_links": 36,
+  "extraction_method": "Playwright MCP Browser Automation"
+} 

@@ -1,0 +1,51 @@
+# Playwright MCP 服务器环境变量配置
+
+# 服务器端口
+PORT=8931
+
+# 浏览器配置
+BROWSER=chromium
+HEADLESS=true
+NO_SANDBOX=true
+
+# Playwright 浏览器路径
+PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
+# 输出目录
+OUTPUT_DIR=/app/output
+
+# 存储状态文件路径
+STORAGE_STATE_PATH=/app/storage/state.json
+
+# 代理配置 (可选)
+# PROXY_SERVER=http://myproxy:3128
+# PROXY_BYPASS=.com,chromium.org,.domain.com
+
+# 网络配置 (可选)
+# ALLOWED_ORIGINS=https://example.com;https://trusted-site.com
+# BLOCKED_ORIGINS=https://blocked-site.com
+
+# 视窗大小
+VIEWPORT_WIDTH=1280
+VIEWPORT_HEIGHT=720
+
+# 用户代理字符串 (可选)
+# USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36
+
+# 设备模拟 (可选)
+# DEVICE=iPhone 15
+
+# 调试模式
+DEBUG=false
+
+# 忽略 HTTPS 错误
+IGNORE_HTTPS_ERRORS=false
+
+# 是否保存 Playwright 跟踪
+SAVE_TRACE=false
+
+# 是否启用 Vision 模式（使用截图而不是可访问性快照）
+VISION_MODE=false
+
+# 图片响应模式: allow, omit, auto
+IMAGE_RESPONSES=auto 
