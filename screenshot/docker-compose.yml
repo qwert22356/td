@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  screenshot-api:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./screenshots:/app/screenshots
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    container_name: screenshot-service
+    networks:
+      - screenshot-network
+
+networks:
+  screenshot-network:
+    driver: bridge
+
+volumes:
+  screenshots-data:
+    driver: local 
