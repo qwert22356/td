@@ -1,0 +1,190 @@
+# 小盒子上线部署指南（VLAN 224 专属网络）
+
+## 1. 小盒子上线步骤
+
+### 1.1 IP 与 VLAN 资源获取
+
+在上线小盒子方案之前，需要向客户获取小盒子所属的 VLAN 以及 IP 网段：
+
+- **VLAN 要求**：必须新增一个 VLAN，用作小盒子的专属 VLAN。
+- **IP 网段**：建议使用 `/24` 子网。
+- **服务器的 IP 地址需求**：
+  - **网卡1**：内容安全管理平台 IP，需与小盒子 IP 可互通（三层可达）。
+  - **网卡2**：DHCP 服务器 IP，负责给小盒子分配地址；UDP 67 可达即可。
+- 小盒子网关交换机需 **开启 DHCP Relay 功能**，以便转发 DHCP 请求。
+
+说明：小盒子上线为“零配置即插即用”，DHCP 使用专属 VLAN 自动下发标签。
+
+---
+
+### 1.2 组网环境配置
+
+结构：小盒子 → 接入交换机 → 汇聚（网关） → 路由 → DHCP 服务器
+
+#### 配置要求：
+
+- **接入交换机**：小盒子接口配置为 Access 模式，加入 VLAN 224。
+- **汇聚交换机**：
+  - 配置 VLAN 224 的 SVI，地址为 `192.168.224.1`。
+  - 开启 DHCP relay，目标地址为 `10.2.2.3`（DHCP Server）。
+
+#### 华为交换机配置示例
+
+##### 接入交换机：
+
+```bash
+[Huawei] sysname AccessSwitch
+[Huawei] vlan batch 224
+[Huawei] interface GigabitEthernet0/0/1
+[Huawei-GigabitEthernet0/0/1] port link-type access
+[Huawei-GigabitEthernet0/0/1] port default vlan 224
+[Huawei-GigabitEthernet0/0/1] quit
+```
+
+> 上联与汇聚之间需配置为 Trunk 并放通 VLAN 224。
+
+##### 汇聚交换机（网关）：
+
+```bash
+[Huawei] sysname CoreSwitch
+[Huawei] vlan batch 224
+[Huawei] interface Vlanif224
+[Huawei-Vlanif224] ip address 192.168.224.1 255.255.255.0
+[Huawei-Vlanif224] dhcp select relay
+[Huawei-Vlanif224] dhcp relay server-ip 10.2.2.3
+[Huawei-Vlanif224] quit
+```
+
+---
+
+## 1.3 安装 dnsmasq（以麒麟 OS 为例）
+
+### 1.3.1 安装
+
+```bash
+sudo yum install dnsmasq -y
+```
+
+### 1.3.2 编辑主配置文件
+
+```bash
+sudo nano /etc/dnsmasq.conf
+```
+
+粘贴以下内容：
+
+```ini
+interface=lo
+bind-interfaces
+
+dhcp-range=set:vlan224,192.168.224.100,192.168.224.150,255.255.255.0,12h
+dhcp-relay-config=192.168.224.1,set:vlan224
+
+dhcp-option=3,192.168.224.1
+dhcp-option=6,8.8.8.8
+log-dhcp
+log-queries
+
+conf-file=/etc/dnsmasq.d/static-leases.conf
+```
+
+---
+
+## 1.4 启动服务并设置开机自启
+
+```bash
+sudo systemctl enable dnsmasq
+sudo systemctl restart dnsmasq
+sudo systemctl status dnsmasq
+sudo dnsmasq --test
+```
+
+---
+
+## 1.5 小盒子的批量接入
+
+### 1.5.1 接入部署
+
+连接小盒子网口与 HDMI IN/OUT，即可自动上线。
+
+---
+
+### 1.5.2 查看动态租期
+
+```bash
+cat /var/lib/misc/dnsmasq.leases
+```
+
+---
+
+### 1.5.3 静态绑定配置
+
+#### 创建自动生成脚本
+
+```bash
+sudo nano /usr/local/bin/generate_static_leases.py
+```
+
+粘贴以下内容：
+
+```python
+#!/usr/bin/env python3
+import os
+
+LEASE_FILE = "/var/lib/misc/dnsmasq.leases"
+OUTPUT_FILE = "/etc/dnsmasq.d/static-leases.conf"
+
+def parse_leases():
+    if not os.path.exists(LEASE_FILE):
+        print(f"Leases file not found: {LEASE_FILE}")
+        return []
+
+    leases = []
+    with open(LEASE_FILE, "r") as f:
+        for line in f:
+            parts = line.strip().split()
+            if len(parts) >= 5:
+                mac = parts[1]
+                ip = parts[2]
+                hostname = parts[3] if parts[3] != "*" else ""
+                leases.append((mac, hostname, ip))
+    return leases
+
+def write_static_config(leases):
+    with open(OUTPUT_FILE, "w") as f:
+        for mac, hostname, ip in leases:
+            line = f"dhcp-host={mac},{hostname},{ip}\n"
+            f.write(line)
+    print(f"Static leases written to {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    leases = parse_leases()
+    if leases:
+        write_static_config(leases)
+    else:
+        print("No valid leases found.")
+```
+
+#### 添加权限并执行
+
+```bash
+sudo chmod +x /usr/local/bin/generate_static_leases.py
+sudo /usr/local/bin/generate_static_leases.py
+```
+
+查看绑定情况：
+
+```bash
+cat /etc/dnsmasq.d/static-leases.conf
+```
+
+---
+
+### 1.5.4 重启 dnsmasq
+
+```bash
+sudo systemctl restart dnsmasq
+```
+
+---
+
